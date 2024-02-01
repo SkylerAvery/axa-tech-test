@@ -9,7 +9,7 @@ export async function searchCharacters(query: string, signal: AbortSignal) {
       throw new Error('An error has occured with the API')
     }
     const data = await response.json()
-    return data
+    return data.results
   } catch (e: any) {
     console.error(e)
     throw new Error('An error has occured with the API')

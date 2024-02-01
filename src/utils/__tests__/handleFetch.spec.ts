@@ -15,7 +15,9 @@ describe('handleFetch', () => {
     it('will return all possible characters for a search query from the API if cache is invalid or missing', async () => {
       const expectedResult = {
         ok: true,
-        json: () => Promise.resolve([{ foo: 'bar' }])
+        json: () => Promise.resolve({
+          results: [{ foo: 'bar' }]
+        })
       }
       global.fetch = jest.fn(() =>
         Promise.resolve(expectedResult)
