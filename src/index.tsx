@@ -9,6 +9,8 @@ import Home from './routes/Home';
 import Character from './routes/Character';
 import ErrorPage from './error-page';
 import Navbar from './components/Navbar';
+import { Provider } from 'react-redux'
+import store from './store';
 
 const router = createBrowserRouter([
   {
@@ -19,7 +21,7 @@ const router = createBrowserRouter([
       index: true,
       element: <Home />,
     }, {
-      path: 'characters/:characterId',
+      path: 'character/:characterId',
       element: <Character />,
     }]
   },
@@ -27,6 +29,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <RouterProvider router={router} fallbackElement={<p>Loading...</p>} />
+    <Provider store={store}>
+      <RouterProvider router={router} fallbackElement={<p>Loading...</p>} />
+    </Provider>
   </React.StrictMode>,
 )
