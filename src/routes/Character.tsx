@@ -1,5 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { Character as CharacterType } from "../types";
+import CharacterCard from "../components/CharacterCard";
 
 export default function Character () {
   const { state } : { state: CharacterType } = useLocation();
@@ -10,6 +11,6 @@ export default function Character () {
   }
 
   return (
-    <h2>{state.name}</h2>
+    <CharacterCard character={state} />
   )
 }
