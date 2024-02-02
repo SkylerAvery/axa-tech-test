@@ -3,10 +3,32 @@ import { useDispatch } from "react-redux";
 import { changeSearchResults } from "../store/characterSlice"
 import { searchCharacters } from "../utils/handleFetch";
 import ResultsDropdown from "./ResultsDropdown";
+import styled from "styled-components";
 
 interface SearchBarProps {
   onFocus?: Function
 }
+
+const Label = styled.label`
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+`
+
+const Input = styled.input`
+  border-color: rgb(107 114 128);
+  border-width: 2px;
+  border-radius: 0.25rem;
+  margin: 0 0.5rem;
+  padding: 0.25rem;
+  width: 75%;
+`
 
 export default function SearchBar({
   onFocus
@@ -14,6 +36,10 @@ export default function SearchBar({
   const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState('');
   const abortControllerRef = useRef<AbortController | null>(null);
+
+  useEffect(() => {
+    dispatch(changeSearchResults([]))
+  }, [])
 
   useEffect(() => {
     if (searchTerm === '') return
@@ -38,8 +64,8 @@ export default function SearchBar({
 
   return (
     <>
-      <label htmlFor="characterSearch">Character Search</label>
-      <input
+      <Label htmlFor="characterSearch">Character Search</Label>
+      <Input
         id="characterSearch"
         name="characterSearch"
         type="text"

@@ -1,27 +1,37 @@
-describe('Home route', () => {
-  it('will render a search bar', () => {
+import { render, screen } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
+import configureStore from 'redux-mock-store';
+import { Provider } from 'react-redux';
+import Home from '../Home';
 
+const mockDispatch = jest.fn();
+
+describe('Home route', () => {
+  beforeEach(() => {
+    jest.mock('react-redux', () => ({
+      ...jest.requireActual('react-redux'),
+      useDispatch: () => mockDispatch
+    }));
   });
 
-  describe('on search input', () => {
-    it('will show a list of characters matching the search query', () => {
+  afterEach(() => {
+    jest.restoreAllMocks()
+  });
 
-    });
-
-    describe('and a matching search result is clicked', () => {
-      it('will redirect to that character page', () => {
-
-      });
-    });
-
-    describe('and the search input changes', () => {
-      it('will hide the old results', () => {
-
+  it('will render a search bar', () => {
+    const mockStore = configureStore([]);
+      const store = mockStore({
+        character: {
+          searchResults: []
+        }
       });
 
-      it('will show a new list of characters matching the new search query', () => {
-
-      });
-    });
+      render(
+        <Provider store={store}>
+          <Home />
+        </Provider>,
+        { wrapper: BrowserRouter }
+      );
+      expect(screen.getByRole('textbox')).toBeInTheDocument()
   });
 })
