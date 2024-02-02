@@ -1,4 +1,4 @@
-import { searchCharacters } from "../handleFetch";
+import { fetchEpisodeData, searchCharacters } from "../handleFetch";
 
 const unmockedFetch = global.fetch
 
@@ -33,4 +33,25 @@ describe('handleFetch', () => {
       await expect(searchCharacters('Test', new AbortController().signal)).rejects.toThrow('An error has occured with the API')
     })
   });
+
+  describe('Episode query', () => {
+    it('will return all possible characters for a search query from the API if cache is invalid or missing', async () => {
+      const expectedResult = {
+        ok: true,
+        json: () => Promise.resolve({ foo: 'bar' })
+      }
+      global.fetch = jest.fn(() =>
+        Promise.resolve(expectedResult)
+      ) as jest.Mock
+      const result = await fetchEpisodeData('Test')
+      expect(result).toEqual({
+        foo: 'bar'
+      })
+    });
+
+    it('will return an empty array if an error with the API is encountered', async () => {
+      global.fetch = () => Promise.reject('418 I\'m a teapot')
+      await expect(fetchEpisodeData('Test')).rejects.toThrow('An error has occured with the API')
+    })
+  })
 })
